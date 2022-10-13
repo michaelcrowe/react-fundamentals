@@ -4,35 +4,28 @@
 import * as React from 'react'
 
 function UsernameForm({onSubmitUsername}) {
-  const inputRef = React.useRef()
-  const [error, setError] = React.useState(null)
+  const [inputValue, updateInputValue] = React.useState('')
   const handleSubmit = event => {
     event.preventDefault()
     console.dir(event.target) // !
-    onSubmitUsername(inputRef.current.value)
+    onSubmitUsername(inputValue) // we can just grab our input value from state instead of checking the input
   }
   const handleChange = event => {
     const {value} = event.target // destructuring of property into a variable of the same name!
-    const isValid = value === value.toLowerCase()
-    setError(isValid ? null : 'Username must be lowercase')
+    updateInputValue(value.toLowerCase())
   }
   return (
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="username">Username:</label>
         <input
-          ref={inputRef}
           id="username"
           type="text"
+          value={inputValue}
           onChange={handleChange}
         />
-        <div role={'alert'} style={{color: 'red', padding: '10px 0'}}>
-          {error}
-        </div>
       </div>
-      <button type="submit" disabled={Boolean(error) ? true : false}>
-        Submit
-      </button>
+      <button type="submit">Submit</button>
     </form>
   )
 }
